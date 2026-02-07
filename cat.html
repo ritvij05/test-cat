@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cactosa Test 🌹</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+}
+
+/* 🐱 CATS BACKGROUND */
+.cats {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cat {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.75;
+    animation: walk linear infinite;
+}
+
+.cat.reverse {
+    transform: scaleX(-1);
+}
+
+@keyframes walk {
+    from { transform: translateX(-120px); }
+    to { transform: translateX(110vw); }
+}
+
+/* MAIN CONTENT */
+.container {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    color: #b30047;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    min-height: 32px;
+}
+
+/* 🌹 ROSE */
+.rose {
+    width: 70px;
+    height: 70px;
+    margin: 15px auto 30px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+.petal {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background: #d1004b;
+    border-radius: 50%;
+    top: 18px;
+    left: 18px;
+}
+
+.petal:nth-child(1){transform: rotate(0deg);}
+.petal:nth-child(2){transform: rotate(60deg);}
+.petal:nth-child(3){transform: rotate(120deg);}
+.petal:nth-child(4){transform: rotate(180deg);}
+.petal:nth-child(5){transform: rotate(240deg);}
+.petal:nth-child(6){transform: rotate(300deg);}
+
+.center {
+    width: 20px;
+    height: 20px;
+    background: #80002a;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* BUTTONS */
+.buttons {
+    display: flex;
+    gap: 28px; /* 👈 guaranteed visible gap */
+    position: relative;
+}
+
+button {
+    padding: 12px 26px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+#yes {
+    background: #ff4d6d;
+    color: white;
+}
+
+#no {
+    background: #ddd;
+    position: absolute; /* starts aligned */
+    left: calc(100% + 28px); /* 👈 keeps distance from Yes */
+    transition: left 0.25s ease, top 0.25s ease;
+    z-index: 2;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🐱 MANY CATS -->
+<div class="cats" id="cats"></div>
+
+<div class="container">
+    <h1>Will You Say Yes? 🌹</h1>
+
+    <div class="rose">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="center"></div>
+    </div>
+
+    <div class="buttons" id="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+/* 🐱 CREATE LOTS OF CATS */
+const catsContainer = document.getElementById("cats");
+const catEmojis = ["🐈", "🐈‍", "😺", "😸", "😹"];
+
+for (let i = 0; i < 25; i++) {
+    const cat = document.createElement("div");
+    cat.className = "cat" + (Math.random() > 0.5 ? " reverse" : "");
+    cat.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+    cat.style.top = Math.random() * 100 + "vh";
+    cat.style.animationDuration = 8 + Math.random() * 18 + "s";
+    cat.style.animationDelay = Math.random() * 10 + "s";
+    catsContainer.appendChild(cat);
+}
+
+/* NO BUTTON ESCAPE */
+const noBtn = document.getElementById("no");
+const msg = document.getElementById("message");
+
+function moveNo() {
+    const pad = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - pad;
+    const maxY = window.innerHeight - noBtn.offsetHeight - pad;
+
+    noBtn.style.position = "fixed"; // detach from buttons
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+}
+
+/* ESCAPE EVENTS */
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("pointerenter", moveNo);
+noBtn.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    moveNo();
+});
+
+/* IF THEY ACTUALLY CLICK IT 😈 */
+noBtn.addEventListener("click", () => {
+    msg.textContent = "WAAAAAAAH! 😾 bad cactosa";
+});
+
+/* YES BUTTON */
+document.getElementById("yes").addEventListener("click", () => {
+    msg.textContent = "Good cactosa 😻✨";
+});
+</script>
+
+</body>
+</html>
